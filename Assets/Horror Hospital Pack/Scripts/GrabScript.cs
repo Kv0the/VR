@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityStandardAssets.Characters.FirstPerson;
 
 public class GrabScript : MonoBehaviour {
 
@@ -7,8 +8,13 @@ public class GrabScript : MonoBehaviour {
     GameObject candidateObject;
     float grabObjectSize;
 	Vector3 actualPosition;
+	float positionLengthVar = 1000;
+	bool rotateModel = false;
 
 	public float thrust;
+	public FirstPersonController fpc;
+
+	public float rotateSpeed = 2.0f;
 
 	GameObject GetMouseHoverObject(float range) {
 		Vector3 position = gameObject.transform.position;
@@ -19,6 +25,12 @@ public class GrabScript : MonoBehaviour {
 			return raycastHit.collider.gameObject;
 
 		return null;
+	}
+
+	void rotateFunction() {
+		float x = Input.GetAxis ("Mouse X") * rotateSpeed;
+		float y = Input.GetAxis ("Mouse Y") * rotateSpeed;
+		grabedObject.transform.eulerAngles += new Vector3(y, x, 0);
 	}
 
 	bool CanGrab(GameObject candidate) {
@@ -52,7 +64,7 @@ public class GrabScript : MonoBehaviour {
 		if (grabedObject == null)
 			return;
 
-		Vector3 direction = (Camera.main.transform.forward * thrust - actualPosition);
+		Vector3 direction = (Camera.main.transform.forward * positionLengthVar - actualPosition);
 		direction.Normalize ();
 
 		Debug.Log (direction);
@@ -69,17 +81,31 @@ public class GrabScript : MonoBehaviour {
 
         if (Input.GetMouseButtonDown (0)) {
 			Debug.Log (GetMouseHoverObject (5));
-			if (grabedObject == null)
+			if (grabedObject == null) {
 				TryGrabObject (GetMouseHoverObject (5));
+				grabedObject.transform.eulerAngles = new Vector3 (0, 0, 0);
+			}
 			else
 				DropObject ();
 		}
 
 		if(grabedObject != null) {
+			if (Input.GetMouseButtonDown (1)) {
+				rotateModel = true;
+				fpc.enabled = false;
+			} else if (Input.GetMouseButtonUp (1)) {
+				rotateModel = false;
+				fpc.enabled = true;
+			}
+
 			Vector3 newPosition = gameObject.transform.position + Camera.main.transform.forward*grabObjectSize;
-			actualPosition =Camera.main.transform.forward * thrust;
+			actualPosition =Camera.main.transform.forward * positionLengthVar;
 			grabedObject.transform.position = newPosition;
-            grabedObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+			grabedObject.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+			grabedObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+			if (rotateModel) {
+				rotateFunction ();
+			}
         }
 	}
 }
