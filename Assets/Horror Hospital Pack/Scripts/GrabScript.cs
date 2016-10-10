@@ -83,7 +83,6 @@ public class GrabScript : MonoBehaviour {
 			Debug.Log (GetMouseHoverObject (5));
 			if (grabedObject == null) {
 				TryGrabObject (GetMouseHoverObject (5));
-				grabedObject.transform.eulerAngles = new Vector3 (0, 0, 0);
 			}
 			else
 				DropObject ();
