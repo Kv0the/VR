@@ -13,6 +13,7 @@ public class GrabScript : MonoBehaviour {
 
 	public float thrust;
 	public FirstPersonController fpc;
+	public ColorButton colorButton;
 
 	public float rotateSpeed = 2.0f;
 
@@ -67,8 +68,6 @@ public class GrabScript : MonoBehaviour {
 		Vector3 direction = (Camera.main.transform.forward * positionLengthVar - actualPosition);
 		direction.Normalize ();
 
-		Debug.Log (direction);
-
 		grabedObject.GetComponent<Rigidbody> ().AddForce (direction * thrust, ForceMode.Acceleration);
 		grabedObject = null;
 
@@ -76,35 +75,35 @@ public class GrabScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        //Debug.Log (GetMouseHoverObject (5));
-        TryHighlightObject(GetMouseHoverObject(5));
+		if (colorButton.isOn) {
+			//Debug.Log (GetMouseHoverObject (5));
+			TryHighlightObject (GetMouseHoverObject (5));
 
-        if (Input.GetMouseButtonDown (0)) {
-			Debug.Log (GetMouseHoverObject (5));
-			if (grabedObject == null) {
-				TryGrabObject (GetMouseHoverObject (5));
+			if (Input.GetMouseButtonDown (0)) {
+				if (grabedObject == null) {
+					TryGrabObject (GetMouseHoverObject (5));
+				} else
+					DropObject ();
 			}
-			else
-				DropObject ();
+
+			if (grabedObject != null) {
+				if (Input.GetMouseButtonDown (1)) {
+					rotateModel = true;
+					fpc.enabled = false;
+				} else if (Input.GetMouseButtonUp (1)) {
+					rotateModel = false;
+					fpc.enabled = true;
+				}
+
+				Vector3 newPosition = gameObject.transform.position + Camera.main.transform.forward * grabObjectSize;
+				actualPosition = Camera.main.transform.forward * positionLengthVar;
+				grabedObject.transform.position = newPosition;
+				grabedObject.GetComponent<Rigidbody> ().angularVelocity = Vector3.zero;
+				grabedObject.GetComponent<Rigidbody> ().velocity = Vector3.zero;
+				if (rotateModel) {
+					rotateFunction ();
+				}
+			}
 		}
-
-		if(grabedObject != null) {
-			if (Input.GetMouseButtonDown (1)) {
-				rotateModel = true;
-				fpc.enabled = false;
-			} else if (Input.GetMouseButtonUp (1)) {
-				rotateModel = false;
-				fpc.enabled = true;
-			}
-
-			Vector3 newPosition = gameObject.transform.position + Camera.main.transform.forward*grabObjectSize;
-			actualPosition =Camera.main.transform.forward * positionLengthVar;
-			grabedObject.transform.position = newPosition;
-			grabedObject.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
-			grabedObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
-			if (rotateModel) {
-				rotateFunction ();
-			}
-        }
 	}
 }
