@@ -37,7 +37,7 @@ public class ColorButton : MonoBehaviour {
             for (int i = 0; i < lightFluor.Length; ++i)
             {
                 lightFluor[i].transform.GetChild(0).GetComponent<Light>().enabled = true;
-                lightFluor[i].transform.GetChild(1).GetComponent<Light>().enabled = true;
+                //lightFluor[i].transform.GetChild(1).GetComponent<Light>().enabled = true;
             }
             this.enabled = false;
 			isOn = true;

@@ -31,7 +31,7 @@ public class GrabScript : MonoBehaviour {
 	void rotateFunction() {
 		float x = Input.GetAxis ("Mouse X") * rotateSpeed;
 		float y = Input.GetAxis ("Mouse Y") * rotateSpeed;
-		grabedObject.transform.eulerAngles += new Vector3(y, x, 0);
+		grabedObject.transform.Rotate(y, x, 0);
 	}
 
 	bool CanGrab(GameObject candidate) {
