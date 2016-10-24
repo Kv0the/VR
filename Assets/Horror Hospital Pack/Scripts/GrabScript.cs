@@ -100,7 +100,7 @@ public class GrabScript : MonoBehaviour {
             if (interactObject.GetComponent<OpenDoorScript>() != null) interactObject.GetComponent<OpenDoorScript>().interaction();
             else if (interactObject.GetComponent<LockedDoor>() != null) interactObject.GetComponent<LockedDoor>().interaction();
             else if (interactObject.GetComponentInChildren<ColorButton>() != null) interactObject.GetComponentInChildren<ColorButton>().interaction();
-            else if (interactObject.GetComponent<TakeFlashScript>() != null) interactObject.GetComponent<TakeFlashScript>().interaction();
+            else if (interactObject.GetComponent<TakeFlashScript>() != null && interactObject != grabedObject) interactObject.GetComponent<TakeFlashScript>().interaction();
             else if (interactObject.GetComponentInChildren<TVScreen>() != null) interactObject.GetComponentInChildren<TVScreen>().interaction();
         }
 
