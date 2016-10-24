@@ -24,9 +24,9 @@ public class ColorButton : MonoBehaviour {
         isOn = false;
     }
 	
-	// Update is called once per frame
-	void Update () {
-		if (Vector3.Distance(player.transform.position, transform.position) < 3f && Input.GetKeyDown(KeyCode.F) && !isOn)
+    public void interaction()
+    {
+        if (!isOn)
         {
             //Green Button
             Renderer rend = GetComponent<Renderer>();
@@ -41,9 +41,9 @@ public class ColorButton : MonoBehaviour {
                 lightRend.material = onMaterial;
             }
             //this.enabled = false;
-			isOn = true;
+            isOn = true;
             audio.Play();
-        } else if (Vector3.Distance(player.transform.position, transform.position) < 3f && Input.GetKeyDown(KeyCode.F) && isOn)
+        } else
         {
             //Red Button
             Renderer rend = GetComponent<Renderer>();
@@ -60,5 +60,5 @@ public class ColorButton : MonoBehaviour {
             isOn = false;
             audio.Play();
         }
-	}
+    }
 }

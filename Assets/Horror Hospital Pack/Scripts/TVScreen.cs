@@ -36,47 +36,43 @@ public class TVScreen : MonoBehaviour
         r.enabled = false;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void interaction()
     {
-        if (Vector3.Distance(player.transform.position, transform.position) < 3f && Input.GetKeyDown(KeyCode.F))
+        if (tries % (channelsTV.Length + 1) == channelsTV.Length)
         {
-            if (tries % (channelsTV.Length + 1) == channelsTV.Length)
-            {
-                r.enabled = false;
-                lightTV.enabled = false;
-            }
-            else
-            {
-                r.enabled = true;
-                r.material.mainTexture = channelsTV[tries % (channelsTV.Length + 1)];
-                lightTV.enabled = true;
-            }
-            b = true;
-            if (tries < channelsTV.Length + 1)
-            {
-                if (tries != channelsTV.Length)
-                {
-                    MovieTexture movie = channelsTV[tries];
-                    movie.loop = true;
-                    movie = channelsTV[tries];
-                    movie.Play();
-                    sourceTV[tries].clip = soundsTV[tries];
-                    sourceTV[tries].loop = true;
-                }
-            }
-            for (int i = 0; i < (channelsTV.Length + 1); ++i)
-            {
-                if (!isPlayingChannel[tries % (channelsTV.Length + 1)])
-                {
-                    if (tries != channelsTV.Length) sourceTV[tries % (channelsTV.Length + 1)].Play();
-                    else isPlayingChannel[tries % (channelsTV.Length + 1)] = true;
-                    isPlayingChannel[tries % (channelsTV.Length + 1)] = true;
-                }
-                if (i == tries % (channelsTV.Length + 1)) sourceTV[i].mute = false;
-                else sourceTV[i].mute = true;
-            }
-            tries++;
+            r.enabled = false;
+            lightTV.enabled = false;
         }
+        else
+        {
+            r.enabled = true;
+            r.material.mainTexture = channelsTV[tries % (channelsTV.Length + 1)];
+            lightTV.enabled = true;
+        }
+        b = true;
+        if (tries < channelsTV.Length + 1)
+        {
+            if (tries != channelsTV.Length)
+            {
+                MovieTexture movie = channelsTV[tries];
+                movie.loop = true;
+                movie = channelsTV[tries];
+                movie.Play();
+                sourceTV[tries].clip = soundsTV[tries];
+                sourceTV[tries].loop = true;
+            }
+        }
+        for (int i = 0; i < (channelsTV.Length + 1); ++i)
+        {
+            if (!isPlayingChannel[tries % (channelsTV.Length + 1)])
+            {
+                if (tries != channelsTV.Length) sourceTV[tries % (channelsTV.Length + 1)].Play();
+                else isPlayingChannel[tries % (channelsTV.Length + 1)] = true;
+                isPlayingChannel[tries % (channelsTV.Length + 1)] = true;
+            }
+            if (i == tries % (channelsTV.Length + 1)) sourceTV[i].mute = false;
+            else sourceTV[i].mute = true;
+        }
+        tries++;
     }
 }

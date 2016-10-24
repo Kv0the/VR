@@ -12,13 +12,10 @@ public class LockedDoor : MonoBehaviour {
         player = GameObject.Find("FPSController");
         audio = GetComponent<AudioSource>();
     }
-	
-	// Update is called once per frame
-	void Update () {
-        if (Vector3.Distance(player.transform.position, transform.position) < 5f && Input.GetKeyDown(KeyCode.F))
-        {
-            StartCoroutine(this.lockedDoor());
-        }
+
+    public void interaction()
+    {
+        StartCoroutine(this.lockedDoor());
     }
 
     public IEnumerator lockedDoor()

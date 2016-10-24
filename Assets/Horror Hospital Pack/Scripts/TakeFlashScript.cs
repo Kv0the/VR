@@ -26,10 +26,12 @@ public class TakeFlashScript : MonoBehaviour {
 					level = 0;
 			}
 		}
-		if (Vector3.Distance (player.transform.position, transform.position) < 3f && Input.GetKeyDown (KeyCode.F)) {
-			isGrap = true;
-			GetComponent<Rigidbody> ().detectCollisions = false;
-			GetComponent<Rigidbody> ().isKinematic = false;
-		}
 	}
+
+    public void interaction()
+    {
+        isGrap = true;
+        GetComponent<Rigidbody>().detectCollisions = false;
+        GetComponent<Rigidbody>().isKinematic = false;
+    }
 }

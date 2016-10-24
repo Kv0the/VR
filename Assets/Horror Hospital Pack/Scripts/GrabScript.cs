@@ -6,6 +6,7 @@ public class GrabScript : MonoBehaviour {
 
 	GameObject grabedObject;
     GameObject candidateObject;
+    GameObject interactObject;
     float grabObjectSize;
 	Vector3 actualPosition;
 	float positionLengthVar = 1000;
@@ -41,7 +42,14 @@ public class GrabScript : MonoBehaviour {
         return candidate.GetComponent<Rigidbody> () != null && candidate != GameObject.Find("FPSController");
 	}
 
-	void TryGrabObject(GameObject grabObject) {
+    bool CanInteract(GameObject candidate)
+    {
+        return (candidate.GetComponent<OpenDoorScript>() != null || candidate.GetComponent<LockedDoor>() != null
+            || candidate.GetComponentInChildren<ColorButton>() != null || candidate.GetComponent<TakeFlashScript>() != null
+            || candidate.GetComponentInChildren<TVScreen>() != null) && candidate != GameObject.Find("FPSController");
+    }
+
+    void TryGrabObject(GameObject grabObject) {
 		if (grabObject == null || !CanGrab(grabObject))
 			return;
 
@@ -64,6 +72,13 @@ public class GrabScript : MonoBehaviour {
         candidateObject = grabObject;
     }
 
+    void TryDetectInteraction(GameObject newObject)
+    {
+        if (newObject == null || !CanInteract(newObject)) return;
+        Debug.Log("NEW OBJECT");
+        interactObject = newObject;
+    }    
+
     void DropObject(){
 		if (grabedObject == null)
 			return;
@@ -78,7 +93,18 @@ public class GrabScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (colorButton.isOn) {
+        //TryDetectInteraction(GetMouseHoverObject(5));
+        interactObject = GetMouseHoverObject(4);
+        if (Input.GetKeyDown(KeyCode.F) && interactObject != null && CanInteract(interactObject))
+        {
+            if (interactObject.GetComponent<OpenDoorScript>() != null) interactObject.GetComponent<OpenDoorScript>().interaction();
+            else if (interactObject.GetComponent<LockedDoor>() != null) interactObject.GetComponent<LockedDoor>().interaction();
+            else if (interactObject.GetComponentInChildren<ColorButton>() != null) interactObject.GetComponentInChildren<ColorButton>().interaction();
+            else if (interactObject.GetComponent<TakeFlashScript>() != null) interactObject.GetComponent<TakeFlashScript>().interaction();
+            else if (interactObject.GetComponentInChildren<TVScreen>() != null) interactObject.GetComponentInChildren<TVScreen>().interaction();
+        }
+
+        if (colorButton.isOn) {
 			//Debug.Log (GetMouseHoverObject (5));
 			TryHighlightObject (GetMouseHoverObject (5));
 

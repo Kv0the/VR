@@ -17,17 +17,18 @@ public class OpenDoorScript : MonoBehaviour {
 		player = GameObject.Find("FPSController");
 		audio = GetComponent<AudioSource>();
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		if (Vector3.Distance (player.transform.position, transform.position) < 5f && Input.GetKeyDown (KeyCode.F)) {
-			if (!isOpenDoor) {
-				StartCoroutine (this.openDoor ());
-			} else {
-				StartCoroutine (this.closeDoor ());
-			}
-		}
-	}
+
+    public void interaction()
+    {
+        if (!isOpenDoor)
+        {
+            StartCoroutine(this.openDoor());
+        }
+        else
+        {
+            StartCoroutine(this.closeDoor());
+        }
+    }
 
 	public IEnumerator openDoor() {
 		audio.timeSamples = 0;
