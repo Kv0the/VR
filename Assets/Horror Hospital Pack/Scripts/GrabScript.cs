@@ -29,10 +29,13 @@ public class GrabScript : MonoBehaviour {
 	}
 
 	void rotateFunction() {
-		float x = Input.GetAxis ("Mouse X") * rotateSpeed;
-		float y = Input.GetAxis ("Mouse Y") * rotateSpeed;
-		grabedObject.transform.Rotate(y, x, 0);
-	}
+		if(Input.GetKey(KeyCode.A))
+            grabedObject.transform.Rotate(rotateSpeed, 0, 0);
+        if (Input.GetKey(KeyCode.S))
+            grabedObject.transform.Rotate(0, rotateSpeed, 0);
+        if (Input.GetKey(KeyCode.D))
+            grabedObject.transform.Rotate(0, 0, rotateSpeed);
+    }
 
 	bool CanGrab(GameObject candidate) {
         return candidate.GetComponent<Rigidbody> () != null && candidate != GameObject.Find("FPSController");
