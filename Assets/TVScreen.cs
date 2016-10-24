@@ -30,6 +30,7 @@ public class TVScreen : MonoBehaviour
         {
             sourceTV[i] = this.gameObject.AddComponent<AudioSource>();
             sourceTV[i].spatialBlend = 1.0f;
+            sourceTV[i].volume = 0.5f;
             isPlayingChannel[i] = false;
         }
         r.enabled = false;
@@ -38,7 +39,7 @@ public class TVScreen : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Vector3.Distance(player.transform.position, transform.position) < 3f && Input.GetKeyDown(KeyCode.E))
+        if (Vector3.Distance(player.transform.position, transform.position) < 3f && Input.GetKeyDown(KeyCode.F))
         {
             if (tries % (channelsTV.Length + 1) == channelsTV.Length)
             {
