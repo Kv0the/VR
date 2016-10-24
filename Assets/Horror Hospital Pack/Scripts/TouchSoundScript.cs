@@ -12,6 +12,11 @@ public class TouchSoundScript : MonoBehaviour {
 
 	void OnCollisionEnter()
 	{
-		audio.PlayOneShot(impact, 0.7f);
-	}
+		audio.PlayOneShot(impact, 0.7f);     
+    }
+
+    void OnCollisionExit()
+    {
+        audio.volume = 1.0f;
+    }
 }
